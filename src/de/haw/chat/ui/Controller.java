@@ -9,6 +9,7 @@ import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -24,6 +25,8 @@ public class Controller {
     @FXML public TextField inTextarea;
 
     @FXML public ScrollPane scrollPane;
+
+    @FXML public ListView userList;
 
     protected int messageindex = 0;
 

@@ -41,7 +41,7 @@ public class GuiApplication extends Application implements Runnable {
         }
 
         primaryStage.setTitle("HAW RN Chat");
-        Scene scene = new Scene((Parent) root, 600, 378);
+        Scene scene = new Scene((Parent) root, 711, 378);
         scene.getStylesheets().add("de/haw/chat/ui/chat.css");
         primaryStage.setScene(scene);
         primaryStage.show();

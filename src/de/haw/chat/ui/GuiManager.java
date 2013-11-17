@@ -7,7 +7,10 @@ import de.haw.chat.application.TaskWorker;
 import de.haw.chat.message.MessageNode;
 import javafx.application.Platform;
 
+import java.net.InetAddress;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Set;
 
 
 /**
@@ -124,6 +127,32 @@ public class GuiManager extends TaskWorker {
                             }
                         });
                     }
+                }
+            }
+        });
+
+        addListener(new ActionListener() {
+            @Override
+            protected TaskAction getListenAction() {
+                return TaskAction.FETCHUSER_PROCESS;
+            }
+
+            @Override
+            protected void onAction(final HashMap<String, String> params) {
+                if(params != null) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            // clear user list
+                            guiController.userList.getItems().clear();
+
+                            // iterate over users and add all
+                            Collection<String> values = params.values();
+                            for(String username : values) {
+                                guiController.userList.getItems().add(username);
+                            }
+                        }
+                    });
                 }
             }
         });

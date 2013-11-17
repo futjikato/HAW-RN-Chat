@@ -8,15 +8,15 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="469.0" maxWidth="600.0" minHeight="378.0" minWidth="600.0" prefHeight="378.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
+<AnchorPane maxHeight="469.0" maxWidth="711.0" minHeight="378.0" minWidth="600.0" prefHeight="378.0" prefWidth="711.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <children>
-    <Label contentDisplay="CENTER" layoutX="217.0" layoutY="20.0" prefWidth="166.0" text="HAW RN Chat" textAlignment="LEFT">
+    <Label contentDisplay="CENTER" layoutX="273.0" layoutY="14.0" prefWidth="166.0" text="HAW RN Chat" textAlignment="LEFT">
       <font>
         <Font size="25.0" />
       </font>
     </Label>
     <Button fx:id="sendBtn" layoutX="511.0" layoutY="337.0" mnemonicParsing="false" onAction="#clickSendBtn" text="Senden" />
-    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hmax="0.0" prefHeight="274.0" prefWidth="562.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="50.0">
+    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hmax="0.0" prefHeight="274.0" prefWidth="562.0" AnchorPane.rightAnchor="130.0" AnchorPane.topAnchor="52.0">
       <content>
         <GridPane fx:id="labelContainer" prefHeight="246.0" prefWidth="562.0" visible="true">
           <columnConstraints>
@@ -32,5 +32,6 @@
       </content>
     </ScrollPane>
     <TextField fx:id="inTextarea" layoutX="18.0" layoutY="337.0" onAction="#clickSendBtn" prefWidth="486.0" />
+    <ListView fx:id="userList" layoutX="581.0" layoutY="52.0" prefHeight="274.0" prefWidth="116.0" />
   </children>
 </AnchorPane>
