@@ -24,14 +24,31 @@ public class Controller {
 
     protected ChatQuestion currentQuestion;
 
+    private String username = "YOU";
+
     public void clickSendBtn() {
-        String message = getAndClearUserChatMessage();
+        final String message = getAndClearUserChatMessage();
 
         if(currentQuestion != null) {
             currentQuestion.processAnswer(message);
             currentQuestion = null;
         } else {
-            addChatMessage(new MessageNode("YOU", message));
+            addChatMessage(new MessageNode(username, message));
+            Manager.getInstance().publishTask(new Task() {
+                @Override
+                public TaskAction getAction() {
+                    return TaskAction.CUSER_NEWMESSAGE;
+                }
+
+                @Override
+                public HashMap<String, String> getParameters() {
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("username", username);
+                    params.put("message", message);
+
+                    return params;
+                }
+            });
         }
     }
 
@@ -91,6 +108,7 @@ public class Controller {
     }
 
     public void setUsername(String username) {
+        this.username = username;
         printInfo(String.format("Username changed to %s", username));
     }
 
