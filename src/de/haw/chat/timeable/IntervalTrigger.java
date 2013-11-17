@@ -20,7 +20,9 @@ public class IntervalTrigger extends Thread {
     public void run() {
         while(!isInterrupted()) {
             try {
-                wait(interval * 1000);
+                synchronized (this) {
+                    this.wait(interval * 1000);
+                }
                 action.run();
             } catch (InterruptedException e) {
                 interrupt();
