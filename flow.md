@@ -130,6 +130,14 @@ main
 	<- P2PManager
 		// clears current clients and adds new inet addresses
 		<-> ClientManager
+		// if a new user is in the list
+		-> (RUSER_ENTERED)
+			<- GuiManager
+				-> [inform user]
+		// if a user is no longer in the list
+		-> (RUSER_LEFT)
+			<- GuiManager
+				-> [inform user]
 ```
 
 ### <a name="userChatMessage"></a> User enters chat message
