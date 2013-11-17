@@ -26,22 +26,34 @@ public class MessageNode {
 
     protected BorderPane root;
 
-    public MessageNode(String username, Date messageTime, String message) {
+    public MessageNode(String username, String message, Date messageTime) {
         loadFXML();
         setData(username, messageTime, message);
     }
 
     public MessageNode(String username, String message) {
-        this(username, new Date(), message);
+        this(username, message, new Date());
     }
 
-    protected void setData(String username, Date messageTime, String message) {
+    private void setData(String username, Date messageTime, String message) {
         labelUsername.setText(username);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH.mm.ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         labelDatetime.setText(sdf.format(messageTime));
 
         labelMessage.setText(message);
+    }
+
+    public void setSystemMessage() {
+        root.getStyleClass().add("systemmessage");
+    }
+
+    public void setSelfMessage() {
+        root.getStyleClass().add("selfmessage");
+    }
+
+    public void setRemoteMessage() {
+        root.getStyleClass().add("remotemessage");
     }
 
     public BorderPane getRoot() {

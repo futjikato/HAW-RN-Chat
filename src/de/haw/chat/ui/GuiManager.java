@@ -112,7 +112,11 @@ public class GuiManager extends TaskWorker {
             protected void onAction(HashMap<String, String> params) {
                 if(params != null) {
                     if(params.containsKey("username") && params.containsKey("message")) {
+                        // create new chat node
                         final MessageNode node = new MessageNode(params.get("username"), params.get("message"));
+                        node.setRemoteMessage();
+
+                        // add within java fx thread
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {

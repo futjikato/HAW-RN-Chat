@@ -4,8 +4,11 @@ import de.haw.chat.application.Manager;
 import de.haw.chat.application.Task;
 import de.haw.chat.application.TaskAction;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -38,7 +41,9 @@ public class GuiApplication extends Application implements Runnable {
         }
 
         primaryStage.setTitle("HAW RN Chat");
-        primaryStage.setScene(new Scene((Parent) root, 600, 600));
+        Scene scene = new Scene((Parent) root, 600, 378);
+        scene.getStylesheets().add("de/haw/chat/ui/chat.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
 
         primaryStage.setOnHidden(new EventHandler<WindowEvent>() {
@@ -53,6 +58,30 @@ public class GuiApplication extends Application implements Runnable {
                     @Override
                     public HashMap<String, String> getParameters() {
                         return null;
+                    }
+                });
+            }
+        });
+
+        GuiApplication.guiController.labelContainer.getChildren().addListener(new ListChangeListener<Node>() {
+            @Override
+            public void onChanged(Change<? extends Node> change) {
+
+                try {
+                    synchronized (Thread.currentThread()) {
+                        Thread.currentThread().wait(100);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    Thread.currentThread().interrupt();
+                }
+
+                // scroll to bottom after rendering messages
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        // max V value is 1
+                        GuiApplication.guiController.scrollPane.setVvalue(1);
                     }
                 });
             }

@@ -10,7 +10,7 @@
 
 <BorderPane padding="$x1" prefHeight="-1.0" prefWidth="500.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <bottom>
-    <Label fx:id="labelDatetime" prefWidth="192.0" text="Datetime" textFill="GREY" textOverrun="ELLIPSIS">
+    <Label fx:id="labelDatetime" prefWidth="192.0" styleClass="date" text="Datetime" textFill="GREY" textOverrun="ELLIPSIS">
       <font>
         <Font name="System Italic" size="10.0" />
       </font>
@@ -20,14 +20,14 @@
     </Label>
   </bottom>
   <center>
-    <Label fx:id="labelMessage" maxHeight="900.0" minHeight="16.0" prefHeight="-1.0" prefWidth="477.0" text="Chat message area">
+    <Label fx:id="labelMessage" maxHeight="900.0" minHeight="16.0" prefHeight="-1.0" prefWidth="477.0" styleClass="message" text="Chat message area">
       <BorderPane.margin>
         <Insets fx:id="x1" />
       </BorderPane.margin>
     </Label>
   </center>
   <top>
-    <Label fx:id="labelUsername" prefHeight="-1.0" prefWidth="192.0" text="Username">
+    <Label fx:id="labelUsername" prefHeight="-1.0" prefWidth="192.0" styleClass="username" text="Username">
       <BorderPane.margin>
         <Insets top="5.0" />
       </BorderPane.margin>

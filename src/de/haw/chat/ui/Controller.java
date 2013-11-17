@@ -4,12 +4,15 @@ import de.haw.chat.application.Manager;
 import de.haw.chat.application.Task;
 import de.haw.chat.application.TaskAction;
 import de.haw.chat.message.MessageNode;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
-import java.util.Date;
 import java.util.HashMap;
 
 public class Controller {
@@ -18,22 +21,33 @@ public class Controller {
 
     @FXML public GridPane labelContainer;
 
-    @FXML public TextArea inTextarea;
+    @FXML public TextField inTextarea;
+
+    @FXML public ScrollPane scrollPane;
 
     protected int messageindex = 0;
 
     protected ChatQuestion currentQuestion;
 
-    private String username = "YOU";
+    private String username = "Me";
 
     public void clickSendBtn() {
         final String message = getAndClearUserChatMessage();
 
         if(currentQuestion != null) {
-            currentQuestion.processAnswer(message);
+            // save reference
+            ChatQuestion tmp_question = currentQuestion;
+            // set to null now and not after processing because that may set an new question
             currentQuestion = null;
+            // now process answer
+            tmp_question.processAnswer(message);
         } else {
-            addChatMessage(new MessageNode(username, message));
+            // add message
+            MessageNode node = new MessageNode(username, message);
+            node.setSelfMessage();
+            addChatMessage(node);
+
+            // inform via manager
             Manager.getInstance().publishTask(new Task() {
                 @Override
                 public TaskAction getAction() {
@@ -64,7 +78,7 @@ public class Controller {
     }
 
     public void ask(ChatQuestion question) {
-        printInfo(question.getQuestion());
+        printSystem(question.getQuestion());
         currentQuestion = question;
     }
 
@@ -96,20 +110,22 @@ public class Controller {
     }
 
     public void printSuccess(String message) {
-        addChatMessage(new MessageNode("System", "SUCCESS: " + message));
+        printSystem("Success: " + message);
     }
 
     public void printError(String message) {
-        addChatMessage(new MessageNode("System", "ERROR: " + message));
+        printSystem("Error: " + message);
     }
 
-    public void printInfo(String message) {
-        addChatMessage(new MessageNode("System", message));
+    public void printSystem(String message) {
+        MessageNode node = new MessageNode("System", message);
+        node.setSystemMessage();
+        addChatMessage(node);
     }
 
     public void setUsername(String username) {
         this.username = username;
-        printInfo(String.format("Username changed to %s", username));
+        printSystem(String.format("Username changed to %s", username));
     }
 
     public void askServer() {

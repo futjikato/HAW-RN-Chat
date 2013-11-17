@@ -1,0 +1,13 @@
+.systemmessage .username {
+    -fx-font: normal italic 13px "Arial";
+    -fx-text-fill: #E3001B;
+}
+
+.selfmessage .username {
+    -fx-font: bold normal 13px "Arial";
+    -fx-text-fill: #006464;
+}
+
+.remotemessage .username {
+    -fx-font: normal normal 13px "Arial";
+}
