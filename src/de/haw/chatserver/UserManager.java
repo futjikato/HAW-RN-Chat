@@ -60,7 +60,7 @@ public final class UserManager {
 
             Set<InetAddress> keys = userMap.keySet();
             for(InetAddress key : keys) {
-                builder.append(String.format(" %s %s", key.toString(), userMap.get(key)));
+                builder.append(String.format(" %s %s", key.getHostAddress(), userMap.get(key)));
             }
 
             return builder.toString();

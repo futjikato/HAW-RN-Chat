@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 /**
  * @author moritzspindelhirn
@@ -38,6 +39,11 @@ public final class Worker implements Runnable {
         while(!Thread.currentThread().isInterrupted()) {
             String command = readLine();
 
+            if(command == null) {
+                Thread.currentThread().interrupt();
+                continue;
+            }
+
             if(command.toUpperCase().equals("BYE")) {
                 sendLine("BYE");
                 try {
@@ -64,6 +70,7 @@ public final class Worker implements Runnable {
                 } else {
                     try {
                         UserManager.getInstance().add(address, username);
+                        mapped = true;
                         sendLine("OK");
                     } catch (Exception e) {
                         sendLine("ERROR " + e.getMessage());
@@ -76,13 +83,16 @@ public final class Worker implements Runnable {
     private String readLine() {
         try {
             String line = reader.readLine();
-            System.out.println("[" + address.toString() + "] " + line);
+            System.out.println("[" + address.getHostAddress() + "] >> " + line);
             return line;
+        } catch (SocketException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-            Thread.currentThread().interrupt();
-            return "";
         }
+
+        Thread.currentThread().interrupt();
+        return "";
     }
 
     private void sendLine(String message) {
@@ -93,7 +103,7 @@ public final class Worker implements Runnable {
             message = String.format("%s\n", message);
         }
 
-        System.out.print("[" + address.toString() + "] " + message);
+        System.out.print("[" + address.getHostAddress() + "] << " + message);
 
         try {
             writer.writeBytes(message);
