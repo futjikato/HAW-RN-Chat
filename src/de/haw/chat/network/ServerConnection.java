@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -25,8 +26,8 @@ public class ServerConnection {
 
     public ServerConnection(String host, int port) throws NetworkException {
         try {
-            this.socket = new Socket(host, port);
-            this.socket.setSoTimeout(5000);
+            this.socket = new Socket();
+            this.socket.connect(new InetSocketAddress(host, port), 2000);
             this.reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             this.writer = new DataOutputStream(this.socket.getOutputStream());
         } catch (SocketException e) {
