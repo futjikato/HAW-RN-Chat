@@ -4,7 +4,7 @@ Declarations:
 
 ```
 ->				starts/calls/throws
-<-				catches an task
+<-				catches a task
 <->				interacts with (method call)
 something		a class
 [something]		user action
