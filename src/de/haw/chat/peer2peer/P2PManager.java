@@ -1,11 +1,11 @@
 package de.haw.chat.peer2peer;
 
-import de.haw.chat.application.ActionListener;
-import de.haw.chat.application.TaskAction;
-import de.haw.chat.application.TaskWorker;
+import de.haw.chat.application.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -32,15 +32,26 @@ public class P2PManager extends TaskWorker {
                 if(params != null) {
                     Set<String> keys = params.keySet();
                     ClientManager clientManager = ClientManager.getInstance();
-                    clientManager.clear();
+
+                    Collection<InetAddress> removals = clientManager.getAddressList();
 
                     for(String key : keys) {
                         try {
                             InetAddress address = InetAddress.getByName(key);
-                            clientManager.add(address);
+                            if(clientManager.contains(address)) {
+                                removals.remove(address);
+                            } else {
+                                clientManager.add(address, params.get(key));
+                                P2PManager.this.publishNewRemoteUserTask(params.get(key));
+                            }
                         } catch (UnknownHostException e) {
                             e.printStackTrace();
                         }
+                    }
+
+                    for(InetAddress address : removals) {
+                        P2PManager.this.publishLeftRemoteUserTask(clientManager.getUsernameByAddress(address));
+                        clientManager.remove(address);
                     }
                 }
             }
@@ -78,6 +89,40 @@ public class P2PManager extends TaskWorker {
                 }
                 // stop this manager
                 interrupt();
+            }
+        });
+    }
+
+    private void publishNewRemoteUserTask(final String username) {
+        Manager.getInstance().publishTask(new Task() {
+            @Override
+            public TaskAction getAction() {
+                return TaskAction.RUSER_ENTERED;
+            }
+
+            @Override
+            public HashMap<String, String> getParameters() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+
+                return params;
+            }
+        });
+    }
+
+    private void publishLeftRemoteUserTask(final String username) {
+        Manager.getInstance().publishTask(new Task() {
+            @Override
+            public TaskAction getAction() {
+                return TaskAction.RUSER_LEFT;
+            }
+
+            @Override
+            public HashMap<String, String> getParameters() {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("username", username);
+
+                return params;
             }
         });
     }

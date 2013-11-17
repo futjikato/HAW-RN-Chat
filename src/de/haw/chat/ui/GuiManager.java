@@ -160,6 +160,44 @@ public class GuiManager extends TaskWorker {
         addListener(new ActionListener() {
             @Override
             protected TaskAction getListenAction() {
+                return TaskAction.RUSER_ENTERED;
+            }
+
+            @Override
+            protected void onAction(final HashMap<String, String> params) {
+                if(params != null && params.containsKey("username")) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            guiController.printSystem(String.format("%s entered the chat.", params.get("username")));
+                        }
+                    });
+                }
+            }
+        });
+
+        addListener(new ActionListener() {
+            @Override
+            protected TaskAction getListenAction() {
+                return TaskAction.RUSER_LEFT;
+            }
+
+            @Override
+            protected void onAction(final HashMap<String, String> params) {
+                if(params != null && params.containsKey("username")) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            guiController.printSystem(String.format("%s left the chat.", params.get("username")));
+                        }
+                    });
+                }
+            }
+        });
+
+        addListener(new ActionListener() {
+            @Override
+            protected TaskAction getListenAction() {
                 return TaskAction.QUIT;
             }
 

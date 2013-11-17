@@ -1,12 +1,8 @@
 package de.haw.chat.peer2peer;
 
-import de.haw.chat.message.MessageNode;
-
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author moritzspindelhirn
@@ -17,10 +13,10 @@ public class ClientManager {
 
     private static ClientManager instance;
 
-    private Set<InetAddress> clients;
+    private HashMap<InetAddress, String> clients;
 
     private ClientManager() {
-        clients = new HashSet<InetAddress>();
+        clients = new HashMap<InetAddress, String>();
     }
 
     public static ClientManager getInstance() {
@@ -32,7 +28,8 @@ public class ClientManager {
     }
 
     public void broadcast(String data) {
-        for(InetAddress inetAddress : clients) {
+        Set<InetAddress> addressSet = clients.keySet();
+        for(InetAddress inetAddress : addressSet) {
             byte[] bytes = data.getBytes();
             DatagramPacket packet = new DatagramPacket(bytes, bytes.length, inetAddress, P2PManager.UDPSERVER_PORT);
 
@@ -40,19 +37,26 @@ public class ClientManager {
         }
     }
 
-    public void add(InetAddress address) {
-        clients.add(address);
+    public void add(InetAddress address, String username) {
+        clients.put(address, username);
     }
 
     public void remove(InetAddress address) {
         clients.remove(address);
     }
 
-    public void clear() {
-        clients.clear();
+    public Collection<InetAddress> getAddressList() {
+        Collection<InetAddress> copy = new ArrayList<InetAddress>();
+        copy.addAll(clients.keySet());
+
+        return copy;
     }
 
     public boolean contains(InetAddress address) {
-        return clients.contains(address);
+        return clients.containsKey(address);
+    }
+
+    public String getUsernameByAddress(InetAddress address) {
+        return clients.get(address);
     }
 }
