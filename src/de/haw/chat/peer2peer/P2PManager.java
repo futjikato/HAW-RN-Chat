@@ -56,7 +56,7 @@ public class P2PManager extends TaskWorker {
             protected void onAction(HashMap<String, String> params) {
                 if(params != null) {
                     if(params.containsKey("username") && params.containsKey("message")) {
-                        String message = String.format("%s: %s\n", params.containsKey("username"), params.containsKey("message"));
+                        String message = String.format("%s: %s\n", params.get("username"), params.get("message"));
                         ClientManager.getInstance().broadcast(message);
                     }
                 }
