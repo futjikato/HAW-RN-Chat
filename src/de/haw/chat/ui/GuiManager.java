@@ -111,7 +111,7 @@ public class GuiManager extends TaskWorker {
             @Override
             protected void onAction(HashMap<String, String> params) {
                 if(params != null) {
-                    if(params.containsKey("username") && params.containsKey("message")) {
+                    if(params.containsKey("username") && params.containsKey("message") && !params.get("username").equals(guiController.getUsername())) {
                         // create new chat node
                         final MessageNode node = new MessageNode(params.get("username"), params.get("message"));
                         node.setRemoteMessage();

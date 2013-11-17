@@ -154,4 +154,8 @@ public class Controller {
             }
         });
     }
+
+    public String getUsername() {
+        return username;
+    }
 }
