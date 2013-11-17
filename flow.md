@@ -174,5 +174,5 @@ All running threads are stoped.
 A Taks kann be published anywhere in the code.<br>
 You get the singleton instance of the Manager and call publishTask. The task will be stored in a BlockingQueue.<br>
 All threads that can process a task extend from the TaskWoker class. This abstract class implements the Observer interface while the Manager class is observable. All TaskWoker are threads. If a TaskWoker thread starts it will start to observe the Manager.<br>
-The Manager-Thread ( main ) will pick up the Tasks will then notify up all tasks within the queue and notify all observers and thus all TaskWorkers.<br>
-By adding ActionListener on an TaskWoker the woker "listens" on that event.
+The Manager-Thread ( main ) will pick up the Tasks from the queue and notify all observers and thus all TaskWorkers.<br>
+By adding ActionListener on an TaskWoker the woker "listens" on that Task.
